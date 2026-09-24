@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -38,6 +38,64 @@ export default function Home() {
       slug: 'negotiator'
     }
   ];
+
+  const timelineEntries = [
+    { year: '2026', title: 'Nanyang Polytechnic', detail: 'Diploma in Digital Security & Forensics' },
+    { year: '2026', title: 'ANTE', detail: 'Solo Developer' },
+    { year: '2026', title: 'Haidilao', detail: 'Kitchen Assistant' },
+    { year: '2025', title: 'Brewerkz', detail: 'Guest Services Associate' },
+    { year: '2025', title: 'Singapore Youth Flying Club', detail: 'Cadet Youth Pilot' },
+    { year: '2025', title: 'Beijing Exchange Programme', detail: 'Exchange' },
+    { year: '2024', title: 'Youth Digital Currency Programme', detail: '120-hour programme' },
+    { year: '2023', title: 'Catholic Church of Divine Mercy', detail: 'Vice President, Altar Servers Ministry' }
+  ];
+
+  const [activeTimelineIndex, setActiveTimelineIndex] = useState(0);
+
+  useEffect(() => {
+    const updateActiveTimeline = () => {
+      const items = Array.from(document.querySelectorAll<HTMLElement>('[data-timeline-entry]'));
+      if (!items.length) return;
+
+      const viewportCenter = window.innerHeight / 2;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      items.forEach((item, index) => {
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(itemCenter - viewportCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      setActiveTimelineIndex(closestIndex);
+    };
+
+    let rafId: number | null = null;
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        updateActiveTimeline();
+        rafId = null;
+      });
+    };
+
+    updateActiveTimeline();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateActiveTimeline);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateActiveTimeline);
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
@@ -95,15 +153,65 @@ export default function Home() {
           </section>
 
           {/* Experience */}
-          <section className="mb-12">
-            <div className="flex items-start gap-8 mb-6">
+          <section className="mb-14">
+            <div className="flex items-start gap-8 mb-8">
               <span className="catalogue-number">02</span>
               <div className="flex-1">
                 <h2 className="text-heading-xl text-foreground mb-3">EXPERIENCE</h2>
                 <div className="registration-line mb-4"></div>
-                <p className="text-body-md text-muted-foreground">
-                  <Link href="/experience" className="text-foreground hover:text-accent transition-colors duration-200">View experience →</Link>
+                <p className="text-body-md text-muted-foreground mb-0">
+                  Education, work and programmes that have shaped how I approach systems, responsibility and problem solving.
                 </p>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-5xl">
+              <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-border" aria-hidden="true" />
+              <div className="space-y-6 md:space-y-8">
+                {timelineEntries.map((entry, index) => {
+                  const isActive = index === activeTimelineIndex;
+                  const isLeft = index % 2 === 0;
+
+                  return (
+                    <div
+                      key={`${entry.year}-${entry.title}`}
+                      data-timeline-entry
+                      data-index={index}
+                      className="grid grid-cols-[minmax(0,1fr)_18px_minmax(0,1fr)] items-start gap-x-3 md:gap-x-5"
+                    >
+                      {isLeft ? (
+                        <div className={`col-start-1 pr-3 md:pr-6 ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+                          <p className="text-meta-mono text-muted-foreground mb-2">{entry.year}</p>
+                          <h3 className={`text-heading-md text-left transition-all duration-500 ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
+                            {entry.title}
+                          </h3>
+                          <p className="mt-2 text-left text-body-sm text-muted-foreground">{entry.detail}</p>
+                        </div>
+                      ) : (
+                        <div className="col-start-1" aria-hidden="true" />
+                      )}
+
+                      <div className="relative col-start-2 flex justify-center pt-2">
+                        <span
+                          className={`block h-3.5 w-3.5 rounded-full border transition-all duration-500 ${isActive ? 'bg-accent border-accent shadow-[0_0_0_4px_rgba(196,167,125,0.12)]' : 'bg-background border-border'}`}
+                          aria-hidden="true"
+                        />
+                      </div>
+
+                      {isLeft ? (
+                        <div className="col-start-3" aria-hidden="true" />
+                      ) : (
+                        <div className={`col-start-3 pl-3 md:pl-6 ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+                          <p className="text-meta-mono text-muted-foreground mb-2">{entry.year}</p>
+                          <h3 className={`text-heading-md text-left transition-all duration-500 ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
+                            {entry.title}
+                          </h3>
+                          <p className="mt-2 text-left text-body-sm text-muted-foreground">{entry.detail}</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </section>
