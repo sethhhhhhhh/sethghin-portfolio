@@ -17,7 +17,7 @@ const navItems: NavItem[] = [
   { name: 'Experience', href: '/experience' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
-  { name: 'Resume ↗', href: '/resume' }
+  { name: 'Resume', href: '/resume' }
 ];
 
 const internalNavItems = navItems.filter(item => !item.external);

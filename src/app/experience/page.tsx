@@ -35,7 +35,7 @@ export default function Experience() {
           <div className="bg-display-text top-20 left-0">EXPERIENCE</div>
 
           <div className="flex items-start gap-8 mb-12">
-            <span className="catalogue-number animate-fade-in">03</span>
+            <span className="catalogue-number animate-fade-in">02</span>
             <div className="flex-1">
               <h1 className="text-display-xl text-foreground mb-4 animate-slide-up">EXPERIENCE</h1>
               <div className="registration-line mb-8 animate-fade-in delay-100"></div>

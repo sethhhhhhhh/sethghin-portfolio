@@ -13,7 +13,7 @@ export default function ResumePage() {
       <div className="bg-display-text top-20 left-0">RESUME</div>
 
       <div className="flex items-start gap-6 sm:gap-8 mb-8 sm:mb-10">
-        <span className="catalogue-number animate-fade-in">06</span>
+        <span className="catalogue-number animate-fade-in">05</span>
         <div className="flex-1 min-w-0">
           <h1 className="text-display-xl text-foreground mb-4 animate-slide-up">RESUME</h1>
           <p className="text-meta-mono text-muted-foreground uppercase tracking-wide mb-1 animate-fade-in delay-100">
