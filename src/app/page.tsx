@@ -51,7 +51,6 @@ export default function Home() {
           {/* Hero Section */}
           <section className="mb-20">
             <div className="flex items-start gap-8 mb-8">
-              <span className="catalogue-number animate-fade-in">01</span>
               <div className="flex-1">
                 <h1 className="text-display-xl text-foreground mb-4 animate-slide-up">Seth Ghin Kai</h1>
                 <p className="text-display-lg text-muted-foreground mb-6 animate-slide-up delay-100">Cybersecurity & Digital Forensics Student</p>
